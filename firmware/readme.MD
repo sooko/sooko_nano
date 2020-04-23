@@ -2,10 +2,14 @@
 
 Burn Firmware 
 
-## Getting Started
+## instructions for burn esp8266 micropython firmware
 
-instructions for burn esp8266 micropython firmware  
+Install esptool
+```
+pip install esptool
 
+```
+goto directory folder
 
 ```
 cd firmware
