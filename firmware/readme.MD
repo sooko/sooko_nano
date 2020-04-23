@@ -1,8 +1,7 @@
-# Project Title
+# Burn/upload Firmware 
+ 
 
-Burn Firmware 
-
-## instructions for burn esp8266 micropython firmware
+## instructions for burn/upload esp8266 micropython firmware
 
 Install esptool
 ```
