@@ -8,5 +8,4 @@ def callback(pin):
         print("button_released")
 button = Pin(0, Pin.IN, Pin.PULL_UP)
 button.irq(trigger=Pin.IRQ_RISING | Pin.IRQ_FALLING, handler=callback)
-
-
+# 
