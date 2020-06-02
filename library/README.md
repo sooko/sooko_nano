@@ -1,6 +1,8 @@
 # sooko nano board library
 
-libary yang sering digunakan dalam membuat project internet of things
+libary yang sering digunakan dalam membuat project internet of things.
+- wifi.py untuk menghubungkan board ke router anda
+- umqttsimple untuk membuat kommunikasi dengan protokol mqtt
 
 
 ### put library file to board
