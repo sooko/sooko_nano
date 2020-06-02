@@ -21,7 +21,7 @@ Wifi().connect("your ssid","your password")
 
 check wifi state 
 ```
-Wifi().isconnect()
+Wifi().isconnected()
 
 ```
 disconnect wifi 
