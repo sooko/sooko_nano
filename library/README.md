@@ -1,7 +1,7 @@
 # sooko nano board library
 
 libary yang sering digunakan dalam membuat project internet of things
-wifi.py
+
 
 ### put library file to board
 using adafruit-ampy
@@ -29,3 +29,8 @@ disconnect wifi
 Wifi().disconnect()
 
 ```
+
+
+
+
+
