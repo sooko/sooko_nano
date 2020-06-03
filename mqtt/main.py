@@ -4,12 +4,11 @@ Wifi().connect("Suko","sooko9999")
 from mqtt import MQTTClient
 import ubinascii
 from machine import Pin
-
-class M(object):
+class Iot(object):
     client_id = ubinascii.hexlify(machine.unique_id())
     client=None
     def __init__(self,*args,**kwargs):
-        super(M,self).__init__(*args,**kwargs)
+        super(Iot,self).__init__(*args,**kwargs)
         try:
             self.client=MQTTClient(self.client_id,"mqtt.eclipse.org",keepalive=0)
             self.client.connect()
@@ -33,4 +32,4 @@ class M(object):
         Pin(2,Pin.OUT).value(0)
     def grenn_off(self):
         Pin(2,Pin.OUT).value(1)
-M()
+Iot()
