@@ -16,6 +16,7 @@ pip install adafruit-ampy
 
 
 
+put file to board
 
 ```
 ampy put wifi.py
