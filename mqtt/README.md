@@ -8,13 +8,11 @@ pip install adafruit-ampy
 ```
 
 
-
-
 put file to board
 
 ```
-ampy put wifi.py
-ampy put mqtt.py
-ampy put main.py
+ampy put --port <your port com> wifi.py
+ampy put --port <your port com> mqtt.py
+ampy put --port <your port com> main.py
 ```
 
