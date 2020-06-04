@@ -10,6 +10,7 @@ class Iot(object):
     def __init__(self,*args,**kwargs):
         super(Iot,self).__init__(*args,**kwargs)
         try:
+            print('mqtt running')
             self.client=MQTTClient(self.client_id,"mqtt.eclipse.org",keepalive=0)
             self.client.connect()
             self.client.set_callback(self.on_message)
@@ -18,6 +19,7 @@ class Iot(object):
             while True:
                 self.client.wait_msg()
         except:
+            print('mqtt stoped')
             Wifi().disconnect()
             machine.reset()
     def on_message(self,topic,msg):

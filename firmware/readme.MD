@@ -3,6 +3,7 @@
 
 ## instructions for burn/upload esp8266 micropython firmware to sooko_nanao_board
 
+
 - Install esptool
 ```
 pip install esptool
