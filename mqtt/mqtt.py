@@ -1,4 +1,3 @@
-
 try:
     import usocket as socket
 except:
@@ -39,9 +38,9 @@ class MQTTClient:
         n = 0
         sh = 0
         while 1:
-            b = self.sock.read(1)[0]
-            n |= (b & 0x7f) << sh
-            if not b & 0x80:
+            b = self.sock.read(1)&#91;0]
+            n |= (b &amp; 0x7f) &lt;&lt; sh
+            if not b &amp; 0x80:
                 return n
             sh += 7
 
@@ -49,7 +48,7 @@ class MQTTClient:
         self.cb = f
 
     def set_last_will(self, topic, msg, retain=False, qos=0):
-        assert 0 <= qos <= 2
+        assert 0 &lt;= qos &lt;= 2
         assert topic
         self.lw_topic = topic
         self.lw_msg = msg
@@ -58,7 +57,7 @@ class MQTTClient:
 
     def connect(self, clean_session=True):
         self.sock = socket.socket()
-        addr = socket.getaddrinfo(self.server, self.port)[0][-1]
+        addr = socket.getaddrinfo(self.server, self.port)&#91;0]&#91;-1]
         self.sock.connect(addr)
         if self.ssl:
             import ussl
@@ -67,25 +66,25 @@ class MQTTClient:
         msg = bytearray(b"\x04MQTT\x04\x02\0\0")
 
         sz = 10 + 2 + len(self.client_id)
-        msg[6] = clean_session << 1
+        msg&#91;6] = clean_session &lt;&lt; 1
         if self.user is not None:
             sz += 2 + len(self.user) + 2 + len(self.pswd)
-            msg[6] |= 0xC0
+            msg&#91;6] |= 0xC0
         if self.keepalive:
-            assert self.keepalive < 65536
-            msg[7] |= self.keepalive >> 8
-            msg[8] |= self.keepalive & 0x00FF
+            assert self.keepalive &lt; 65536
+            msg&#91;7] |= self.keepalive >> 8
+            msg&#91;8] |= self.keepalive &amp; 0x00FF
         if self.lw_topic:
             sz += 2 + len(self.lw_topic) + 2 + len(self.lw_msg)
-            msg[6] |= 0x4 | (self.lw_qos & 0x1) << 3 | (self.lw_qos & 0x2) << 3
-            msg[6] |= self.lw_retain << 5
+            msg&#91;6] |= 0x4 | (self.lw_qos &amp; 0x1) &lt;&lt; 3 | (self.lw_qos &amp; 0x2) &lt;&lt; 3
+            msg&#91;6] |= self.lw_retain &lt;&lt; 5
 
         i = 1
         while sz > 0x7f:
-            premsg[i] = (sz & 0x7f) | 0x80
+            premsg&#91;i] = (sz &amp; 0x7f) | 0x80
             sz >>= 7
             i += 1
-        premsg[i] = sz
+        premsg&#91;i] = sz
 
         self.sock.write(premsg, i + 2)
         self.sock.write(msg)
@@ -98,10 +97,10 @@ class MQTTClient:
             self._send_str(self.user)
             self._send_str(self.pswd)
         resp = self.sock.read(4)
-        assert resp[0] == 0x20 and resp[1] == 0x02
-        if resp[3] != 0:
-            raise MQTTException(resp[3])
-        return resp[2] & 1
+        assert resp&#91;0] == 0x20 and resp&#91;1] == 0x02
+        if resp&#91;3] != 0:
+            raise MQTTException(resp&#91;3])
+        return resp&#91;2] &amp; 1
 
     def disconnect(self):
         self.sock.write(b"\xe0\0")
@@ -112,17 +111,17 @@ class MQTTClient:
 
     def publish(self, topic, msg, retain=False, qos=0):
         pkt = bytearray(b"\x30\0\0\0")
-        pkt[0] |= qos << 1 | retain
+        pkt&#91;0] |= qos &lt;&lt; 1 | retain
         sz = 2 + len(topic) + len(msg)
         if qos > 0:
             sz += 2
-        assert sz < 2097152
+        assert sz &lt; 2097152
         i = 1
         while sz > 0x7f:
-            pkt[i] = (sz & 0x7f) | 0x80
+            pkt&#91;i] = (sz &amp; 0x7f) | 0x80
             sz >>= 7
             i += 1
-        pkt[i] = sz
+        pkt&#91;i] = sz
         #print(hex(len(pkt)), hexlify(pkt, ":"))
         self.sock.write(pkt, i + 1)
         self._send_str(topic)
@@ -139,7 +138,7 @@ class MQTTClient:
                     sz = self.sock.read(1)
                     assert sz == b"\x02"
                     rcv_pid = self.sock.read(2)
-                    rcv_pid = rcv_pid[0] << 8 | rcv_pid[1]
+                    rcv_pid = rcv_pid&#91;0] &lt;&lt; 8 | rcv_pid&#91;1]
                     if pid == rcv_pid:
                         return
         elif qos == 2:
@@ -159,9 +158,9 @@ class MQTTClient:
             if op == 0x90:
                 resp = self.sock.read(4)
                 #print(resp)
-                assert resp[1] == pkt[2] and resp[2] == pkt[3]
-                if resp[3] == 0x80:
-                    raise MQTTException(resp[3])
+                assert resp&#91;1] == pkt&#91;2] and resp&#91;2] == pkt&#91;3]
+                if resp&#91;3] == 0x80:
+                    raise MQTTException(resp&#91;3])
                 return
 
     # Wait for a single incoming MQTT message and process it.
@@ -176,28 +175,28 @@ class MQTTClient:
         if res == b"":
             raise OSError(-1)
         if res == b"\xd0":  # PINGRESP
-            sz = self.sock.read(1)[0]
+            sz = self.sock.read(1)&#91;0]
             assert sz == 0
             return None
-        op = res[0]
-        if op & 0xf0 != 0x30:
+        op = res&#91;0]
+        if op &amp; 0xf0 != 0x30:
             return op
         sz = self._recv_len()
         topic_len = self.sock.read(2)
-        topic_len = (topic_len[0] << 8) | topic_len[1]
+        topic_len = (topic_len&#91;0] &lt;&lt; 8) | topic_len&#91;1]
         topic = self.sock.read(topic_len)
         sz -= topic_len + 2
-        if op & 6:
+        if op &amp; 6:
             pid = self.sock.read(2)
-            pid = pid[0] << 8 | pid[1]
+            pid = pid&#91;0] &lt;&lt; 8 | pid&#91;1]
             sz -= 2
         msg = self.sock.read(sz)
         self.cb(topic, msg)
-        if op & 6 == 2:
+        if op &amp; 6 == 2:
             pkt = bytearray(b"\x40\x02\0\0")
             struct.pack_into("!H", pkt, 2, pid)
             self.sock.write(pkt)
-        elif op & 6 == 4:
+        elif op &amp; 6 == 4:
             assert 0
     def check_msg(self):
         self.sock.setblocking(False)

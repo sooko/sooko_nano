@@ -14,8 +14,7 @@ class Iot(object):
             self.client=MQTTClient(self.client_id,"mqtt.eclipse.org",keepalive=0)
             self.client.connect()
             self.client.set_callback(self.on_message)
-            self.client.subscribe(b"switch")
-            self.client.subscribe(b"push_button")
+            self.client.subscribe(b"sooko/lampu")
             while True:
                 self.client.wait_msg()
         except:
@@ -35,3 +34,4 @@ class Iot(object):
     def grenn_off(self):
         Pin(2,Pin.OUT).value(1)
 Iot()
+
